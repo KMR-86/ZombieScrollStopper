@@ -1,8 +1,8 @@
 package com.kmr.ZombieScrollStopper.Controller;
 
 import com.kmr.ZombieScrollStopper.Model.Post;
+import com.kmr.ZombieScrollStopper.Service.OllamaPostGeneratorService;
 import com.kmr.ZombieScrollStopper.Service.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +16,15 @@ import java.util.List;
 @RestController
 public class PostController {
     private final PostService postService;
+    private final OllamaPostGeneratorService ollamaPostGeneratorService;
 
-    public PostController(PostService postService) {
+    public PostController(
+            PostService postService,
+            OllamaPostGeneratorService ollamaPostGeneratorService
+    )
+    {
         this.postService = postService;
+        this.ollamaPostGeneratorService = ollamaPostGeneratorService;
     }
 
     @GetMapping("/getPost")
@@ -44,6 +50,11 @@ public class PostController {
     @DeleteMapping("deletePost/{id}")
     public void deletePost(@PathVariable("id") Long id) {
         postService.deletePostById(id);
+    }
+
+    @GetMapping("/generatePost")
+    public String generatePost() {
+        return ollamaPostGeneratorService.queryOllama("Netherlands");
     }
 
 }
